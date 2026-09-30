@@ -587,7 +587,7 @@ async function saveRow(id) {
       sort_order:r.sort_order, sprint:r.sprint, cat:r.cat, area:r.area,
       title:r.title, status:r.status||'',
       problem:r.problem, why:r.why, scope:r.scope, kpi:r.kpi,
-      notes:r.notes, ref:r.ref, jobs:r.jobs||[]
+      notes:r.notes, ref:r.ref, prototype:r.prototype||'', jobs:r.jobs||[]
     });
     setSaveStatus('saved','Saved');
     setTimeout(()=>setSaveStatus('',''),2000);
@@ -611,7 +611,7 @@ function setFilter(f) {
 
 async function addRow(sprint) {
   const s = sprint || (filter!=='all' ? filter : 'now');
-  const payload = { sort_order:nextSortOrder, sprint:s, cat:'Product', area:'Product', status:'', title:'', status:'', problem:'', why:'', scope:'', kpi:'', notes:'', ref:'', jobs:[] };
+  const payload = { sort_order:nextSortOrder, sprint:s, cat:'Product', area:'Product', status:'', title:'', problem:'', why:'', scope:'', kpi:'', notes:'', ref:'', prototype:'', jobs:[] };
   nextSortOrder += 10;
   setSaveStatus('saving','Saving…');
   try {
@@ -758,7 +758,8 @@ function rRow(r) {
         <div class="expfield" style="display:flex;flex-direction:column;gap:8px;">
           <div class="expfield"><label class="explbl">KPI</label><input class="expinp" type="text" value="${esc(r.kpi)}" placeholder="e.g. DAU, activation rate…" oninput="upd('${r.id}','kpi',this.value)" /></div>
           <div class="expfield"><label class="explbl">Notes</label><input class="expinp" type="text" value="${esc(r.notes)}" placeholder="Internal notes…" oninput="upd('${r.id}','notes',this.value)" /></div>
-          <div class="expfield"><label class="explbl">Reference Link</label><input class="expinp expinp-link" type="text" value="${esc(r.ref)}" placeholder="https://…" oninput="upd('${r.id}','ref',this.value)" /></div>
+          <div class="expfield"><label class="explbl">Product Requirements</label><input class="expinp expinp-link" type="text" value="${esc(r.ref)}" placeholder="https://…" oninput="upd('${r.id}','ref',this.value)" /></div>
+          <div class="expfield"><label class="explbl">Prototype</label><input class="expinp expinp-link" type="text" value="${esc(r.prototype||'')}" placeholder="https://…" oninput="upd('${r.id}','prototype',this.value)" /></div>
         </div>
       </div>
     </div>
