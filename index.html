@@ -648,7 +648,7 @@ function setTab(id,tab) { const r=rows.find(r=>r.id===id); if(r) r.activeTab=tab
 function addJob(id) {
   const r=rows.find(r=>r.id===id); if(!r) return;
   if(!r.jobs) r.jobs=[];
-  r.jobs.push({as:'',when:'',want:'',so:'',inorder:''});
+  r.jobs.push({storytitle:'',as:'',when:'',want:'',so:'',inorder:''});
   render(); debounceSave(id);
 }
 function delJob(id,ji) {
@@ -733,7 +733,10 @@ function rRow(r) {
   ondragend="dend()">
   <div class="row">
     <div class="dh">⣿</div>
-    <div class="cell"><input class="title-input" type="text" value="${esc(r.title)}" placeholder="Initiative title…" oninput="upd('${r.id}','title',this.value)" /></div>
+    <div class="cell" style="display:flex;align-items:center;gap:8px;">
+      <span style="font-family:monospace;font-size:10px;color:var(--txd);white-space:nowrap;flex-shrink:0;">SASS-${String(r.sort_order/10).padStart(3,'0')}</span>
+      <input class="title-input" type="text" value="${esc(r.title)}" placeholder="Initiative title…" oninput="upd('${r.id}','title',this.value)" style="flex:1;" />
+    </div>
     <div class="cell"><select onchange="upd('${r.id}','cat',this.value)">${CATS.map(c=>`<option value="${c}" ${r.cat===c?'selected':''}>${c||'Category'}</option>`).join('')}</select></div>
     <div class="cell"><select onchange="upd('${r.id}','area',this.value)">${AREAS.map(a=>`<option value="${a}" ${r.area===a?'selected':''}>${a||'Area'}</option>`).join('')}</select></div>
     <div class="cell"><select onchange="upd('${r.id}','status',this.value)" style="color:${statusColor(r.status||'')}">${STATUSES.map(s=>`<option value="${s}" ${(r.status||'')===s?'selected':''} style="color:${statusColor(s)}">${s||'Status'}</option>`).join('')}</select></div>
@@ -763,8 +766,9 @@ function rRow(r) {
       <div class="jobs-wrap">
         ${(r.jobs||[]).map((j,ji)=>`
         <div class="job-card">
+          <span class="job-lbl" style="grid-column:1/-1;color:var(--orange);padding-bottom:4px;border-bottom:0.5px solid var(--bdr);margin-bottom:2px;">Story title</span><input class="job-inp" type="text" value="${esc(j.storytitle||'')}" placeholder="e.g. Symptom summaries…" style="grid-column:1/-1;font-size:12px;border-bottom:0.5px solid var(--bdr);padding-bottom:6px;margin-bottom:4px;" oninput="updJob('${r.id}',${ji},'storytitle',this.value)" />
           <span class="job-lbl">As a</span><input class="job-inp" type="text" value="${esc(j.as)}" placeholder="e.g. product manager…" oninput="updJob('${r.id}',${ji},'as',this.value)" />
-          <span class="job-lbl">When I</span><input class="job-inp" type="text" value="${esc(j.when)}" placeholder="e.g. start my week…" oninput="updJob('${r.id}',${ji},'when',this.value)" />
+          <span class="job-lbl">When</span><input class="job-inp" type="text" value="${esc(j.when)}" placeholder="e.g. I start my week…" oninput="updJob('${r.id}',${ji},'when',this.value)" />
           <span class="job-lbl">I want to</span><input class="job-inp" type="text" value="${esc(j.want)}" placeholder="e.g. see what changed…" oninput="updJob('${r.id}',${ji},'want',this.value)" />
           <span class="job-lbl">So I can</span><input class="job-inp" type="text" value="${esc(j.so)}" placeholder="e.g. prioritise my day…" oninput="updJob('${r.id}',${ji},'so',this.value)" />
           <span class="job-lbl">In order that</span><input class="job-inp" type="text" value="${esc(j.inorder)}" placeholder="e.g. the team can focus…" oninput="updJob('${r.id}',${ji},'inorder',this.value)" />
